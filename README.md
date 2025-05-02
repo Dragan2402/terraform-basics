@@ -38,6 +38,7 @@ This repository contains my solution for a team upskilling session focused on **
 > The specific folder and file structure is left open to allow for personal interpretation and implementation.
 
 You are encouraged to:
+
 - Organize infrastructure code clearly
 - Parameterize cloud-specific values
 - Use modules where applicable
@@ -47,6 +48,7 @@ You are encouraged to:
 ## 🧠 Learning Goals
 
 This project supports an interactive learning session where developers will:
+
 - Compare different implementation approaches
 - Share learnings and pain points
 - Deepen their understanding of Terraform workflows
@@ -54,6 +56,21 @@ This project supports an interactive learning session where developers will:
 
 ---
 
-## 📄 License
+## 🚀 Project Startup
 
-This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute it under the terms of that license.
+Follow the steps below to get both the API and client running locally in your development environment.
+
+### 🛠️ .NET API
+
+#### 🔧 Configuration
+
+1. Create a file named `appsettings.Development.json` in the API project root (if not already present).
+2. Add your PostgreSQL connection string:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=your_db;Username=your_user;Password=your_password"
+  }
+}
+```
