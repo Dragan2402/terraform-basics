@@ -1,0 +1,33 @@
+name: Build and Deploy Client Static Web App
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - src/weather-client/**
+
+jobs:
+  build_and_deploy_job:
+    if: ${{ github.event_name != 'pull_request' && github.ref_type != 'tag' }}
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          lfs: false
+      - name: Create client env file
+        run: |
+          echo "${{ secrets.CLIENT_ENV }}" > src/weather-client/.env
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.CLIENT_STATIC_WEB_APP_DEPLOYMENT_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/src/weather-client"
+          output_location: "build"
+          app_build_command: "npm run build"
