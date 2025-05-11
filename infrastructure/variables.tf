@@ -13,3 +13,8 @@ variable "location" {
   description = "Represents location, allowed only values = westeurope, northeurope, default value = westeurope"
   default     = "westeurope"
 }
+
+variable "subscription_id" {
+  description = "The subscription ID to use for Azure resources"
+  type        = string
+}
