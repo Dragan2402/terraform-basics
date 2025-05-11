@@ -9,3 +9,10 @@ module "static-webapp" {
   location            = var.location
   resource_group_name = azurerm_resource_group.main.name
 }
+
+module "web-app-api" {
+  source              = "./modules/api"
+  app_name            = var.app_name
+  location            = var.location
+  resource_group_name = azurerm_resource_group.main.name
+}
