@@ -9,7 +9,7 @@ on:
       - src/weather-api/**
 
 env:
-  AZURE_WEBAPP_NAME: "test-weather-app"
+  AZURE_WEBAPP_NAME: "was-weather"
   AZURE_WEBAPP_PACKAGE_PATH: "src/weather-api/"
   DOTNET_VERSION: "8.0.x"
 
