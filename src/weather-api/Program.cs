@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore;
 using weather_api.Extensions;
-using weather_api.Infrastructure;
 using weather_api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,17 +19,18 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddDbContext<WeatherDbContext>(
-options => options
-    .UseNpgsql(
-            builder.Configuration.GetConnectionString("DefaultConnection")
-        ),
-    ServiceLifetime.Scoped
-);
+//builder.Services.AddDbContext<WeatherDbContext>(
+//options => options
+//    .UseNpgsql(
+//            builder.Configuration.GetConnectionString("DefaultConnection")
+//        ),
+//    ServiceLifetime.Scoped
+//);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ITemperatureService, TemperatureService>();
+builder.Services.AddSingleton<IDbSimulationService, DBSimulationService>();
 
 var app = builder.Build();
 
@@ -44,11 +43,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<WeatherDbContext>();
-    context.Database.Migrate();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var context = scope.ServiceProvider.GetRequiredService<WeatherDbContext>();
+//    context.Database.Migrate();
+//}
 
 app.UseCors("_AllowAllOrigins");
 
