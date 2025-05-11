@@ -27,9 +27,15 @@ jobs:
 
       - name: dotnet build and publish
         run: |
+          cd ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
           dotnet restore
           dotnet build --configuration Release
-          dotnet publish -c Release --property:PublishDir='${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/weather-app'
+          dotnet publish -c Release --property:PublishDir='./weather-app'
+
+      - name: "Login to Azure"
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CONNECTION_DETAILS }}
 
       - name: "Run Azure webapp deploy action using publish profile credentials"
         uses: azure/webapps-deploy@v3
