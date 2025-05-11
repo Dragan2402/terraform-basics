@@ -15,8 +15,7 @@ This Terraform module deploys a static web application to cloud storage with CDN
 ```hcl
 module "static_webapp" {
   source = "./modules/static-webapp"
-
-  project_name     = "my-webapp"
+  app_name         = "my-webapp"
   environment      = "production"
   location         = "eastus"
   custom_domain    = "www.example.com"
@@ -27,62 +26,44 @@ module "static_webapp" {
 
 ## Inputs
 
-| Name                 | Description                            | Type     | Default      | Required |
-| -------------------- | -------------------------------------- | -------- | ------------ | :------: |
-| project_name         | Name of the project                    | `string` | n/a          |   yes    |
-| environment          | Environment (e.g., dev, staging, prod) | `string` | n/a          |   yes    |
-| location             | Azure region for deployment            | `string` | n/a          |   yes    |
-| custom_domain        | Custom domain name for the webapp      | `string` | `null`       |    no    |
-| enable_ssl           | Whether to enable SSL/TLS              | `bool`   | `true`       |    no    |
-| storage_account_tier | Storage account tier                   | `string` | `"Standard"` |    no    |
+| Name                | Description                 | Type                                 | Default      | Required |
+| ------------------- | --------------------------- | ------------------------------------ | ------------ | :------: |
+| app_name            | Name of the app             | `string`                             | n/a          |   yes    |
+| location            | Azure region for deployment | `string - [westeurope, northeurope]` | `westeurope` |    no    |
+| resource_group_name | Name of the rersource group | `string`                             | `null`       |   yes    |
 
 ## Outputs
 
-| Name                 | Description                     |
-| -------------------- | ------------------------------- |
-| website_url          | The URL of the static website   |
-| cdn_endpoint         | The CDN endpoint URL            |
-| storage_account_name | The name of the storage account |
+| Name         | Description                                                                                                                              |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| web_app_id   | The Id of the static web app                                                                                                             |
+| web_app_key  | The API key of this Static Web App, which is used for later interacting with this Static Web App from other clients, e.g. GitHub Action. |
+| web_app_name | The name of the web app                                                                                                                  |
 
 ## Example
 
 ```hcl
-module "static_webapp" {
-  source = "./modules/static-webapp"
-
-  project_name     = "my-company-website"
-  environment      = "production"
-  location         = "eastus"
-  custom_domain    = "www.mycompany.com"
-  enable_ssl       = true
-  storage_account_tier = "Standard"
+module "static-webapp" {
+  source              = "./modules/static-webapp"
+  app_name            = "swa-${var.app_name}"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.main.name
 }
 
-output "website_url" {
-  value = module.static_webapp.website_url
+output "static_webapp_id" {
+  value       = module.static-webapp.static_webapp_id
+  description = "Id of the static web app"
+}
+
+output "static_webapp_name" {
+  value       = module.static-webapp.static_webapp_name
+  description = "Name of the static web app"
 }
 ```
-
-## Security Considerations
-
-- The module enables HTTPS by default
-- Storage accounts are configured with appropriate security settings
-- CDN is configured with security headers
-- Access is restricted to HTTPS only
 
 ## Dependencies
 
 - Azure Provider
-- Azure Storage Account
-- Azure CDN Profile
-- Azure CDN Endpoint
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
 
 ## License
 
