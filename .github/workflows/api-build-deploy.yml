@@ -1,9 +1,6 @@
 name: Build and Deploy Api Web App
 
 on:
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
   push:
     branches:
