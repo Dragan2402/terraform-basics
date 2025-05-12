@@ -50,4 +50,4 @@ jobs:
           region: "eu-north-1"
           version_label: v-${{ github.run_number }}
           s3_bucket: ${{ secrets.AWS_S3_EB_BUCKET }}
-          deployment_package: app.zip
+          deployment_package: "src/weather-api/app.zip"
