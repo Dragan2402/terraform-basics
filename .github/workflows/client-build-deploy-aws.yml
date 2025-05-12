@@ -21,14 +21,17 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install dependencies
+        working-directory: src/weather-client
+        run: npm ci
+
       - name: Create client env file
         run: |
           echo "${{ secrets.CLIENT_ENV }}" > src/weather-client/.env
 
       - name: Build client app
-        run: |
-          cd src/weather-client
-          npm run build
+        working-directory: src/weather-client
+        run: npm run build
 
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master
